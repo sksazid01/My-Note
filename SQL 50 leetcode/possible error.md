@@ -42,4 +42,8 @@ on a.id = b.id;
 <img width="740" height="287" alt="image" src="https://github.com/user-attachments/assets/0246cc52-f843-4d41-9733-222acb169dc4" />
 
 
+# find no of null row
+
+count(*)-count(column name)
+
 
