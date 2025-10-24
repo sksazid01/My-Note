@@ -9,3 +9,11 @@
 * function: **isalnum(char)** returns true if the character is Alphanumeric.
 
 ---
+
+# [Problem](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
+* must be typecast here if we want to use it inside vector<int> ()
+* **(int)(it-numbers.begin())+1**: because, add +1 because the problem statement uses 1-indexed positions.
+* <img width="416" height="80" alt="image" src="https://github.com/user-attachments/assets/9a2b4b67-fa06-46ea-ab4b-06548a02b3d8" />
+
+
+
