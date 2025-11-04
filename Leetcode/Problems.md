@@ -23,3 +23,17 @@
 # [56](https://leetcode.com/problems/merge-intervals/description/?envType=study-plan-v2&envId=top-interview-150)
 - must be considered, [[1,4],[2,3]], 2nd value of first index may greater then the next. 
 <img width="1800" height="923" alt="image" src="https://github.com/user-attachments/assets/64b057aa-ab5b-4f53-9dbc-6678e9114367" />
+
+
+# [57](https://leetcode.com/problems/insert-interval/description/?envType=study-plan-v2&envId=top-interview-150)
+- interval: 4 to 8.
+- first, find the index where the upper bound(2nd value) is less than 4 (to find the initial position of the interval) 1,2, 3 ->4
+- then, find the last position of the interval. The range of the interval is = (min, max) of all intervals. 
+```cpp
+   // Step 2: Merge all overlapping intervals
+        while (i < n && intervals[i][0] <= newInterval[1]) {
+            newInterval[0] = min(newInterval[0], intervals[i][0]);
+            newInterval[1] = max(newInterval[1], intervals[i][1]);
+            i++;
+        }
+```
