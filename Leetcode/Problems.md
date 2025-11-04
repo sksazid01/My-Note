@@ -19,3 +19,7 @@
 # [228](https://leetcode.com/problems/summary-ranges/?envType=study-plan-v2&envId=top-interview-150)
 - num[i+1]-num[i] == 1 may overflow.
 <img width="1699" height="879" alt="image" src="https://github.com/user-attachments/assets/d6edaa80-1ce4-45fd-825e-6e6c79f50ace" />
+
+# [56](https://leetcode.com/problems/merge-intervals/description/?envType=study-plan-v2&envId=top-interview-150)
+- must be considered, [[1,4],[2,3]], 2nd value of first index may greater then the next. 
+<img width="1800" height="923" alt="image" src="https://github.com/user-attachments/assets/64b057aa-ab5b-4f53-9dbc-6678e9114367" />
