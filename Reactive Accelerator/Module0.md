@@ -79,4 +79,24 @@ git branch -m feature/add-heading-text
 # After renaming, you can check that the branch name changed:
 git branch
 ```
+## Merge
+> git merge feature/add-heading-text # it will merge with the current branch
+
+### If there is a conflict, then you should manually change it.
+<img width="872" height="418" alt="image" src="https://github.com/user-attachments/assets/bccab2f2-96ca-41b9-9330-d73f8e2e78fa" />
+
+to
+
+<img width="872" height="418" alt="image" src="https://github.com/user-attachments/assets/ecefb879-9e6c-4c5c-9b44-e9122c3e2987" />
+
+- > git commit
+
+<img width="1342" height="801" alt="image" src="https://github.com/user-attachments/assets/3c509a62-9921-44c1-94b5-8f338ed507a6" />
+then git will automatically provide a commit message.
+
+# Stash
+- git stash
+> move branch without committing changes
+
+
 
