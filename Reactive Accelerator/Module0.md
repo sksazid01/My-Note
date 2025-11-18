@@ -42,5 +42,41 @@ credential.helper=store
 > git reflog
 <img width="1911" height="208" alt="image" src="https://github.com/user-attachments/assets/47519bfd-5af1-4439-ae9a-2e5979037d0d" />
 
+## Branch
+```bash
+#!/bin/bash
+# --------------------------------------------
+# GIT WORKFLOW: Creating, merging, and deleting a feature branch
+# --------------------------------------------
 
+# Step 1: Create a new branch called "dev/add-heading-text"
+git branch dev/add-heading-text
+
+# Step 2: List all branches to confirm the new branch was created
+git branch --list
+
+# Step 3: Switch to the new branch to start working on it
+git switch dev/add-heading-text
+
+# Step 4: Confirm you're now on the new branch
+git branch --list
+
+# Step 9: Switch back to the main branch to prepare for merging
+git switch main
+
+# Step 10: Merge the feature branch into the main branch
+git merge dev/add-heading-text
+
+# Step 12: View Git history and reflog (records of all changes and branch switches)
+git reflog
+
+# Step 13: Delete the feature branch after merging (cleanup)
+git branch -d dev/add-heading-text
+
+# You can rename it to "feature/add-heading-text" using this command
+git branch -m feature/add-heading-text
+
+# After renaming, you can check that the branch name changed:
+git branch
+```
 
