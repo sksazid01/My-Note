@@ -17,7 +17,7 @@
 | **1NF** | Atomic values, no repeating groups | Split multi-value fields |
 | **2NF** | 1NF + No partial dependencies | Move non-key attributes |
 | **3NF** | 2NF + No transitive dependencies | Eliminate indirect dependencies |
-| **BCNF** | Stronger 3NF | Every determinant is a candidate key |
+| **BCNF (Boyce-Codd Normal Form)** | Stronger 3NF | Every determinant is a candidate key |
 
 ## **Practical Example** 🚀
 
@@ -42,33 +42,6 @@ StudentID | StudentName | CourseID | CourseName    | Instructor | Grade
 - **Delete Anomaly**: Delete Jane's record → lose "Databases" info
 
 ### **After 3NF Normalization** ✅
-
-```sql
--- 1. Students Table
-CREATE TABLE Students (
-    StudentID INT PRIMARY KEY,
-    StudentName VARCHAR(50)
-);
-
--- 2. Courses Table  
-CREATE TABLE Courses (
-    CourseID INT PRIMARY KEY,
-    CourseName VARCHAR(50),
-    Instructor VARCHAR(50)
-);
-
--- 3. Enrollments Table (junction)
-CREATE TABLE Enrollments (
-    StudentID INT,
-    CourseID INT,
-    Grade CHAR(1),
-    PRIMARY KEY (StudentID, CourseID),
-    FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
-    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
-);
-```
-
-**Normalized Data:**
 ```
 Students table:           Courses table:                 Enrollments table:
   StudentID↑          CourseID↑  CourseName          StudentID↑  CourseID↑   Grade
@@ -249,6 +222,22 @@ PARTIAL DEPENDENCIES violate 2NF!
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
+ ## Non-Key Attribute: 
+ ### A non-key attribute is any column that is NOT part of the primary key.
+ - StudentName
+ - Email
+ - Age
+```
+┌─────────────────────────────────────────────────────────┐
+│  NON-KEY ATTRIBUTE = Any column NOT in the Primary Key  │
+└─────────────────────────────────────────────────────────┘
+```
+## Composite Primary Key: 
+### A composite primary key is a primary key made up of TWO or MORE columns together to uniquely identify each row.
+- (StudentID, CourseID) - COMPOSITE KEY
+
+## Partial Dependency: 
+### Occurs when a non-key attribute depends on only PART of a composite primary key, not the entire key.
 
 ### **🔧 Action:**
 Decompose the table to remove partial dependencies.
@@ -461,8 +450,9 @@ Remove the transitive dependency by creating a separate table.
 
 ### **3NF Tables:**
 
-```
+
 TABLE 1: Students (unchanged)
+```
 ┌─────────────┬─────────────┐
 │ StudentID*  │ StudentName │
 ├─────────────┼─────────────┤
@@ -470,9 +460,10 @@ TABLE 1: Students (unchanged)
 │      2      │    Jane     │
 └─────────────┴─────────────┘
 🔑 PK: StudentID
-
+```
 
 TABLE 2: Instructors (NEW!)
+```
 ┌──────────────┬────────────┐
 │ Instructor*  │ Department │
 ├──────────────┼────────────┤
@@ -482,9 +473,12 @@ TABLE 2: Instructors (NEW!)
 └──────────────┴────────────┘
 🔑 PK: Instructor
 📌 Dependency: Instructor → Department ✅ (key → non-key)
+```
+
 
 
 TABLE 3: Courses (modified)
+```
 ┌──────────┬────────────┬────────────┐
 │CourseID* │ CourseName │ Instructor │
 ├──────────┼────────────┼────────────┤
@@ -495,9 +489,11 @@ TABLE 3: Courses (modified)
 └──────────┴────────────┴────────────┘
 🔑 PK: CourseID
 📌 Dependency: CourseID → CourseName, Instructor ✅
+```
 
 
 TABLE 4: Enrollments (unchanged)
+```
 ┌─────────────┬──────────┬───────┐
 │ StudentID*  │CourseID* │ Grade │
 ├─────────────┼──────────┼───────┤
@@ -541,9 +537,9 @@ INSERT INTO Courses VALUES
 (103, 'Networks', 'Prof.Khan'),
 (104, 'AI/ML', 'Prof.Smith');
 
-# **Continuing from Table 4: Enrollments...**
+```
 
-### **Table 4: Enrollments (unchanged)**
+### **Table 4: Enrollments**
 ```
 ┌─────────────┬──────────┬───────┐
 │ StudentID*  │CourseID* │ Grade │
