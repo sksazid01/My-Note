@@ -20,7 +20,7 @@ It is a **pattern** used to:
 | 4 | `0-9` | Any digit |
 | 5 | `^` | NOT (negation, inside brackets) |
 | 6 | `/` | End of regex |
-| 7 | `g` | Global flag (match all) |
+| 7 | `g` | Global flag (match all words) |
 
 
 # 8 Methods
@@ -70,7 +70,8 @@ It is a **pattern** used to:
 | `?` | Zero or one | `/colou?r/g` | "color colour" | ["color", "colour"] |
 | `{n}` | Exactly n | `/a{3}/g` | "aa aaa" | ["aaa"] |
 | `{n,m}` | n to m times | `/a{2,3}/g` | "a aa aaa" | ["aa", "aaa"] |
-| `^` | Start of string | `/^hi/` | "hi there" | ["hi"] |
+| `^` | must be Start the string with that | `/^hi/` | "hibye there" | ["hi"] |
+| `[^hi]` | Any single character **not** `h` or `i` | `/[^hi]/` | "hibye ?" | ["b","y","e"," ","?"] |
 | `$` | End of string | `/bye$/` | "good bye" | ["bye"] |
 
 ---
