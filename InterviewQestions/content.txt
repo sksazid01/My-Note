@@ -1,0 +1,1869 @@
+Q. Given an array of numbers indicating stock price of n consecutive days. If you buy stock at one day and sell at any later day what is the maximum profit that you can get?
+
+int maxProfit(vector<int>& prices) {
+    int buy = prices[0];
+    int profit = 0;
+    for(int i=1;i<prices.size();i++){
+        profit = max(profit, prices[i] - buy);
+        buy = min(buy, prices[i]);
+    }
+    return profit;
+}
+
+Q.Given an array of n integers. You need to take all zeroes in an array to the end without changing the relative order of the remaining element. eg: [2,0,0,3,1,0,5] => [2,3,1,5,0,0,0]
+void moveZeroes(vector<int>& nums) {
+   int n = nums.size(), snowBallSize = 0;
+   for(int i=0; i<n; i++){
+       if(!nums[i])snowBallSize++;
+       else if(snowBallSize){
+           swap(nums[i], nums[i-snowBallSize]);
+       }
+   }
+}
+Q. Given an array of n integers. Reorder the elements such that all odd numbers occur after even numbers.
+void reorderEvenOdd(vector<int>& arr) {
+   if(arr.isEmpty())return;
+   int left = 0;
+   int right = arr.size() - 1;
+   while (left < right) {
+       // Increment left index while we see even numbers
+       while (left < right && arr[left] % 2 == 0) {
+           left++;
+       }
+       // Decrement right index while we see odd numbers
+       while (left < right && arr[right] % 2 != 0) {
+           right--;
+       }
+       if (left < right) {
+           swap(arr[left], arr[right]);
+           left++;
+           right--;
+       }
+   }
+}
+left moves forward until it finds an odd number (something that shouldn’t be on the left).
+right moves backward until it finds an even number (something that shouldn’t be on the right).
+Then it swaps those two, and continues.
+
+
+   partition(numbers.begin(), numbers.end(), [](int n) {
+       return n % 2 == 0;
+   });
+
+
+Q. Given an array of strings strs, group the anagrams together
+E.g. ["cat","tab","act","bat","taco"] => [{"cat","act"},{"tab","bat"},{"taco"}]
+   vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        map<vector<int>, vector<string>> ans;
+
+
+        for(auto &st: strs){
+            vector<int>mp(26, 0);
+            for(auto &it: st){
+                mp[it-'a']++;
+            }
+            ans[mp].push_back(st);
+        }
+        vector<vector<string>>res;
+        for(auto &[v1, v2]: ans)res.push_back(v2);
+
+
+        return res;
+    }
+
+
+Q. Given an array of n integers. Find the kth largest element in the array.
+   int findKthLargest(vector<int>& nums, int k) {
+        priority_queue<int,vector<int>,greater<int>>pq;
+
+
+        for(int i = 0;i<k;i++){
+            pq.push(nums[i]);
+        }
+        
+        for(int i = k;i<nums.size();i++){
+            int element = nums[i];
+
+
+            if(element > pq.top()){
+                pq.pop();
+                pq.push(element);
+            }
+        }
+
+
+        return pq.top();
+    }
+
+
+Q. Given two very large number in string format. Find the sum of the two number
+string addStrings(const string& a, const string& b) {
+   int i = a.size() - 1;
+   int j = b.size() - 1;
+   int carry = 0;
+   string res;
+
+
+   while (i >= 0 || j >= 0 || carry) {
+       int sum = carry;
+
+
+       if (i >= 0) sum += a[i--] - '0';
+       if (j >= 0) sum += b[j--] - '0';
+
+
+       res.push_back(char('0' + (sum % 10)));
+       carry = sum / 10;
+   }
+
+
+   reverse(res.begin(), res.end());
+
+
+   // (Optional) remove leading zeros, keep at least one digit
+   int p = 0;
+   while (p + 1 < res.size() && res[p] == '0') p++;
+   return res.substr(p);
+}
+Given two large numbers as strings, num1 and num2 with num1 larger than num2, return their difference in string format, using no direct string to int conversion or libraries.
+
+
+
+
+string subtractStrings(string num1, string num2) {
+   // Assumption: num1 >= num2, both are non-negative integer strings
+
+
+   int i = (int)num1.size() - 1;
+   int j = (int)num2.size() - 1;
+   int borrow = 0;
+   string res;
+
+
+   while (i >= 0) {
+       int d1 = (num1[i] - '0') - borrow;
+       int d2 = (j >= 0) ? (num2[j] - '0') : 0;
+
+
+       if (d1 < d2) {
+           d1 += 10;
+           borrow = 1;
+       } else {
+           borrow = 0;
+       }
+
+
+       int diff = d1 - d2;
+       res.push_back(char('0' + diff));
+
+
+       i--;
+       j--;
+   }
+
+
+   // Remove leading zeros (currently res is reversed)
+   while (res.size() > 1 && res.back() == '0') res.pop_back();
+
+
+   reverse(res.begin(), res.end());
+   return res;
+}
+
+
+Q. Given two binary tree. Check if they are identical [not isomorphism]
+
+   bool isSameTree(TreeNode* p, TreeNode* q) {
+        if(!p and !q)return true;
+        if((!p and q) or (p and !q) or (p->val != q -> val)) return false;
+        bool fl = true;
+        fl &= isSameTree(p->left, q->left);
+        fl &= isSameTree(p->right, q->right);
+
+        return fl;
+    }
+
+
+Q. Given two array of integers. Find the common elements between them.
+
+Q. Find pairs with given target sum in a doubly linked list.
+Input: 
+1 <> 2 <> 4 <> 5 <> 6 <> 8 <> 9
+target = 7
+Output: 
+(1,6), (2,5)
+
+
+Q. Solve the problem using Object Oriented Programming
+
+int main(){
+    int square1width = 50;
+    int square2width = 80;
+    int rectangle1width = 30, rectangle1height = 40;
+    int rectangle2width = 20, rectangle2height = 40;
+
+    int square1area = square1width* square1width;
+    int square2area = square2width* square2width;
+    int rectangle1area = rectangle1height*rectangle1width;
+    int rectangle2area = rectangle2width* rectangle2height;
+}
+
+Q. Given an array of sides of triangles, return an array of strings. The strings would be either “yes” or “no”, corresponding to whether the same indexed triangle is a right triangle or not.
+Input: [[3,4,5], [5,9,12], [6,8,10]] Output: ["yes","no","yes"]
+
+
+
+Q. A dictionary of sorted words was like this: [a, above, bad, broke, cat,..., yes, yolk, zoo]. After a malfunction it became this: [..., yes, yolk, zoo, a, above, bad, broke, cat,....]. Write a program so that given a word, one can find the word in the dictionary, with the same time complexity as when the dictionary was sorted.
+
+
+Given two strings s1, s2, return whether a substring of s1 is an anagram of s2
+Input: s1 = "hello", s2 = "lol" Output: True
+Input: s1 = "hello", s2 = "loa" Output: False
+
+
+Given an array containing 0,1,2 sort it.
+Input: [2,0,1,1,0,2] Output: [0,0,1,1,2,2]
+
+
+Using no loops, print this pattern for a given number n:
+n, n-5, n-10,....0,....,n-10,n-5,n. Example: 7, 2, -3, 2, 7
+Given an integer N, find all the divisors of N.
+Given two sorted arrays A and B, combine all the elements of A and B into a new sorted array C.
+For a binary tree, you are given a table of two columns N and P, where N represents the id of a node in the tree and P represents the parent of that node in the tree. Write a SQL query to find which the leaf, root and inner nodes and output a table fo the following format
+N
+NodeType
+5
+root
+2
+inner
+3
+leaf
+4
+leaf
+8
+inner
+6
+leaf
+
+
+Q. Given a singly linked list, more specifically the head of the linked list. Return the reverse of the list.
+
+What will the output of this code in C Programming Language and why?
+int arr[3] = {1, 2, 3};
+
+if(&arr[0] == &arr){
+    printf("They are the same!");
+}else {
+    printf("Not same");
+}
+The name of the array is a pointer to the first item of the Array. So it will print "They are the same!"
+
+Given an array, what will be the base address if we print the array name only (e.g., printf(ara))?
+
+
+It will print the address of the first item of the array. In C, you can't pass array to functions by "Pass by value". So when you pass an array to an function (for example: printf(arr)), the compiler will actually pass the pointer to the first element. You can easily test this hypothesis by doing something like this:
+int arr[1] = {100};
+
+if(arr == &arr){
+    printf("Yay!\n");
+}
+
+if(arr == &arr[0]){
+    printf("Damn!");
+}
+The above code should print
+Yay!
+Damn!
+
+
+arr = [1, 2, 3, 4]
+
+print(arr[2])
+
+
+Write a code to delete the middle element of a stack without using any additional data structure while preserving the original order. Input: [1, 2, 3, 4, 5]. Output: [1, 2, 4, 5]
+
+
+def fn(n):
+    if n == 0:
+        return 0
+
+    return n + fn(n-1)
+Given the above function, rename the function according to what the function tries to achive.
+2nd Iteration: Write the same function but in a iterative manner. Does the both implementations have same Time Complexity and Space Complxity?
+
+
+Write down the stack trace of the recursive function and try to speak aloud while doing so. After getting what the function returns, rename the function accordingly.
+For the second iterations, a simple loop will be the answer. However, think deeply about the fundamental difference between the two implementations. One of the implementation uses a Data structure, one doesn't. So their space complexity won't be same.
+
+
+What is the time complexity of the following code?
+int fun(int n) {
+    if(n <= 1) return n;
+    int x = fun(n - 1);
+    int y = fun(n - 2);
+    return x + y;
+}
+Given an array of integers heights representing the histogram's bar height where the width of each bar is 1, return the area of the largest rectangle in the histogram.
+
+https://leetcode.com/problems/largest-rectangle-in-histogram/description/
+
+You have a n-story building, and two eggs. An egg will break if dropped from a certain height (ie above a floor f). Determine the minimum number of moves that you need to determine with certainty what the value of f is.
+
+https://leetcode.com/problems/egg-drop-with-2-eggs-and-n-floors/description/
+Given a 2D matrix where each row is sorted. Describe how to find an element in the matrix. What is the complexity of such approach?
+Given a graph G and two nodes u and v of the graph. Find the lowest common ancestor of u and v.
+
+Given a list of courses you have to take and a list of prerequisites, return the order in which you have to take the courses. If it is not possible to take all the courses return an empty list.
+https://leetcode.com/problems/course-schedule-ii/description/
+
+Given an integer array of size n, find all elements that appear more than ⌊n/3⌋ times.
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        vector<int> majors;
+        int count = 1;
+
+        for(int i = 1; i < nums.size(); i++){
+            if( nums[i] != nums[i-1] ){
+                if( count > nums.size()/3 ) majors.push_back(nums[i-1]);
+                count = 0;
+            }
+            count++;
+        }
+
+        if( count > nums.size()/3 ) majors.push_back(nums.back());
+        return majors;
+    }
+};
+Given string num representing a non-negative integer num, and an integer k, return the smallest possible integer after removing k digits from num.
+
+https://leetcode.com/problems/remove-k-digits/description/
+
+class Solution {
+public:
+    string removeKdigits(string num, int k) {
+       
+        string newNum = "";
+        // remove digits that are greater than the next digit
+        for(int i=0;i<num.size();i++){
+            while( k and newNum.size() and newNum.back() > num[i] ){
+                k--;
+                newNum.pop_back();
+            }
+            newNum += num[i];
+        }
+        // remove leading zeros
+        reverse(newNum.begin(),newNum.end());
+        while( newNum.size() and newNum.back() == '0' ) newNum.pop_back();
+        reverse(newNum.begin(),newNum.end());
+        // remove remaining k digits if any
+        while(k and newNum.size()) {
+            newNum.pop_back();
+            k--;
+        }
+        // if newNum is empty, return 0
+        if( newNum.size() == 0 ) newNum = "0";
+        return newNum;
+    }
+};
+
+
+Reverse a given singly linked list.
+
+Given a large input string without \n present. Output the string of sentences where we will input the max letter count in a line. output the modified string, so if line breaks occur in the middle of a word, place it after a newline.
+Input:
+reve systems is a software company
+11
+Output:
+reve
+systems is
+a software
+company
+
+Given two input strings, you have to find whether the second string is present in the first string. Please explain all the approaches for solving this problem.
+
+Given a string, find the character with the highest frequency and print both the character and its count.
+Input: aaabccd
+Output: a 3
+Cluster Detection Problem:
+Given a 2D axis with n circles, where each circle has a center (x, y) and a radius R, determine the number of clusters (groups of intersecting circles). Only a diagram was provided; no test cases.
+
+Given a string of lowercase letters, you have to find the longest mirror substring from it. The string radar or racecar is not mirror but bid or dib is. For simplicity lets say b=d,i=i,o=o,w=w,v=v,x=x,p=q in the mirrored substring.
+There is an array of numbers n. You have to merge any two neighboring elements to make the length of the array n-1 in such way that, the minimum of the maximum of each consecutive pair gets removed. If the array is { 2, 5, 3, 7, 9 }, the result can be { 7, 3, 7, 9 } or { 2, 8, 7, 9 }
+Write the shortest path of the scenario graph. (The scenario included undirected graph with cycles)
+Create a data structure uniqueQueue where you can get the kth last element of the queue by using get(k) method and push n if it is not in the queue using push(n) method.
+Example:
+push(11)
+push(22)
+push(33)
+get(1) # returns 33
+push(22)
+get(2) # returns 22
+
+You are designing a ride sharing app where you can take multiple passenger in specific destination. Given a set of trip data as tuples { pickup_time, drop_time, passenger_count }. You have to return the number of total trips taken maximizing the passenger count.
+Example Input: [(0,30,5),(5,10,2),(15,20,2)]
+Exmaple Output: 1
+You are given a tree with n nodes and e edges. Each node has a value. Then you are given Q queries. In each query, you are given a node number, and you need to return the XOR of all nodes in the subtree rooted at that node (including the node itself).
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAXN = 100005;
+vector<int> adj[MAXN];
+int subXor[MAXN];
+
+void dfs(int u, int p) {
+    subXor[u] = u;
+    for (int v : adj[u]) {
+        if (v == p) continue;
+        dfs(v, u);
+        subXor[u] ^= subXor[v];
+    }
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, e;
+    cin >> n >> e;
+
+    while(e--) {
+        int u, v; cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    dfs(1, -1);
+
+    int Q; cin >> Q;
+    while (Q--) {
+        int node; cin >> node;
+        cout << subXor[node] << "\n";
+    }
+}
+
+A very large number (length between 50 to 100 digits) in string format is given. You need to check if the number is divisible by 7. Solve this for t test cases.
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+bool divisibleBy7(const string &num) {
+    int rem = 0;
+    for (char c : num) {
+        rem = (rem * 10 + (c - '0')) % 7;
+    }
+    return rem == 0;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t; cin >> t;
+    while (t--) {
+        string num; cin >> num;
+        cout << (divisibleBy7(num) ? "YES" : "NO") << "\n";
+    }
+}
+
+Implement Merge Sort for t test cases.
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void merge(vector<int> &a, int l, int m, int r) {
+    vector<int> left(a.begin() + l, a.begin() + m + 1);
+    vector<int> right(a.begin() + m + 1, a.begin() + r + 1);
+
+    int i = 0, j = 0, k = l;
+    while (i < left.size() && j < right.size()) {
+        if (left[i] <= right[j]) a[k++] = left[i++];
+        else a[k++] = right[j++];
+    }
+    while (i < left.size()) a[k++] = left[i++];
+    while (j < right.size()) a[k++] = right[j++];
+}
+
+void mergeSort(vector<int> &a, int l, int r) {
+    if (l >= r) return;
+    int m = (l + r) / 2;
+    mergeSort(a, l, m);
+    mergeSort(a, m + 1, r);
+    merge(a, l, m, r);
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t; cin >> t;
+    while (t--) {
+        int n; cin >> n;
+        vector<int> arr(n);
+        for (int i = 0; i < n; i++) cin >> arr[i];
+        mergeSort(arr, 0, n - 1);
+        for (int x : arr) cout << x << " ";
+        cout << "\n";
+    }
+}
+
+A non-decreasing array is given. A new group is formed whenever the difference between two consecutive numbers is greater than 1 (the later number starts a new group). You are allowed to remove any elements from the array to maximize the number of groups. Return the maximum number of groups you can form. Solve this for t test cases.
+
+https://codeforces.com/problemset/problem/2114/C
+
+
+For a given number, find and print all of its distinct prime divisors. Solve this for t test cases.
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<long long> primeDivisors(long long n) {
+    vector<long long> primes;
+    for (long long i = 2; i * i <= n; i++) {
+        if (n % i == 0) {
+            primes.push_back(i);
+            while (n % i == 0) n /= i;
+        }
+    }
+    if (n > 1) primes.push_back(n);
+    return primes;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t; cin >> t;
+    while (t--) {
+        long long n; cin >> n;
+        vector<long long> primes = primeDivisors(n);
+        for (long long p : primes) cout << p << " ";
+        cout << "\n";
+    }
+}
+There are 3 switches S1, S2, and S3 outside a server room. Inside the room, there are 3 cooling fans, and each fan is connected to exactly one switch. However, the switches are not labeled, so you don’t know which switch controls which fan. You are allowed to enter the server room only once. How can you figure out which switch controls which fan?
+Given the root of a binary tree, return the inorder traversal of its nodes values.
+
+Given a Directed Cyclic graph find the sum of all the nodes at level three from the root node
+
+
+To solve this problem we can use a BFS traversal of the graph. We can keep track of the level of each node and when we reach the third level we can sum all the nodes at that level.
+
+
+
+
+Given the head of a linked list, remove the nth node from the end of the list and return its head.
+ class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode* slow=head;
+        ListNode* fast = head;
+
+        for(int i=0; i<n; i++){
+            fast = fast ->next;
+        }
+
+        if(fast == nullptr) return head ->next;
+        while(fast->next !=nullptr){
+            slow = slow ->next;
+            fast = fast ->next;
+        }
+
+        slow->next = slow ->next->next;
+
+        return head;
+    }
+};
+
+Solve a problem related to finding the Minimum Spanning Tree in a graph.
+Given the root of a binary tree, invert/mirror the tree, and return its root.
+
+class Solution {
+public:
+    void invert(TreeNode* root){
+        if(!root or (root ->left == nullptr and root -> right == nullptr))return;
+        swap(root ->left, root ->right);
+        invert(root->left);
+        invert(root ->right);
+    }
+    TreeNode* invertTree(TreeNode* root) {
+        invert(root);
+        return root;
+    }
+};
+Determine the number of connected components in an undirected graph.
+Use DFS to identify and count the connected components.
+Company
+Position
+Employee
+ABC
+blah
+20
+ABC
+blah
+15
+ABC
+blah
+5
+XYZ
+blah
+10
+XYZ
+blah
+12
+XYZ
+blah
+5
+MNO
+blah
+20
+MNO
+blah
+5
+
+Problem Solving
+There is a food track consisting of cells marked with 0, 1, or other numbers. Here, 0 signifies the cell is not traceable, 1 signifies it is traceable, and any other number represents the destination. Starting from the top-left point, determine the longest path to reach the destination. If no path exists, print -1.
+
+
+
+
+
+
+1
+1
+1
+1
+0
+1
+1
+9
+1
+
+
+Your task is to write a function in the C programming language to find an optimal route cost to a target location inside a maze and return the highest 4 bits (MSB + 3 bits) of the optimal route cost value. Your function should take as input two integer numbers for the starting index on the maze array. An optimal route is defined as a complete path from the start point to the target location that requires the least effort/cost. Diagonal movement in the maze is not allowed. An example maze is given below:
+4
+3
+7
+8
+3
+6
+5
+4
+-1
+2
+3
+6
+-1
+-1
+-1
+-1
+-1
+-1
+5
+2
+0
+94
+7
+-1
+-1
+16
+-1
+-1
+7
+1
+-1
+-1
+5
+1
+15
+25
+0
+3
+5
+6
+-1
+6
+2
+6
+9
+-1
+-1
+21
+-1
+-1
+-1
+-1
+5
+-1
+2
+2
+-1
+-1
+22
+-1
+-1
+5
+-1
+4
+-1
+7
+8
+-1
+-1
+26
+-1
+-1
+5
+-1
+3
+-1
+6
+20
+5
+3
+4
+11
+23
+11
+-1
+2
+-1
+5
+2
+-1
+-1
+-1
+-1
+-1
+20
+-1
+2
+-1
+4
+4
+-1
+4
+-1
+-1
+-1
+4
+-1
+1
+-1
+3
+6
+7
+8
+8
+7
+6
+5
+10
+4
+-1
+2
+
+Maze Details:
+The starting block location will be provided as a function parameter (Blue block in the example).
+Blocks with a value of -1 are impassable (Grey blocks in the example).
+The Goal block and only the Goal block will always have a cost of 0 (Green blocks in the example).
+The maze will not have any circular routes that do not go through the Goal block first.
+The maze is stored in a 2D array. The 2D maze array will be defined globally.
+The maze size will be a pair of positive integer numbers, you can assume that the size parameters, length, and height of the maze will fit in a C integer (int) type.
+The cost values, excluding the impassable blocks, will always be a positive integer that will fit in a C integer (int) type.
+The maze length and height are not guaranteed to be equal but will be global fixed defined constants for each problem
+You are given an HTML string. Your task is to determine the number of characters encompassed by each HTML tag in the string. For each tag, count the number of characters that are enclosed between the opening () and closing () tags.
+A tag is composed of one or more lowercase English letters (a-z). For example: <div> ... </div>, <span>..</span>. It can be followed by digits (0-9) i.e <h1>..</h1>.
+The content between the tags can consist of:
+English characters (a-z, A-Z).
+Digits (0-9).
+Punctuation marks: period (.), comma (,), and spaces(' ').
+Note: When a character is encompassed by a same tag multiple times, count only once for that tag. A tag can have 0 characters. In that case don't print that tag. Spaces(' ') between the tags are not counted.
+string consume(string &s,int st){
+    string tag;
+    while(s[st]!='>') tag+=s[st++];
+    return tag;
+}
+
+
+void solve(string s) {
+    // the total character inside a tag
+    map<string,int> totalCharCount;
+    // to find the nesting level of a tag
+    // eg. <p><p></p></p>, here p is nested two times
+    map<string,int> nestedTagLevel;
+
+
+    vector<string> tags;
+    vector<int> charCount;
+
+
+    // signifies root level tag
+    // helps to simplify code logic
+    tags.push_back("");
+    charCount.push_back(0);
+
+
+    for(int i=0;i<s.size();i++){
+        if( s[i] == '<' and s[i+1]!='/'  ){
+            // starting tag
+            string tag = consume(s,i+1);
+            // advance pointer by the consumer
+            // character count
+            i+=tag.size()+1;
+            tags.push_back(tag);
+            charCount.push_back(0);
+            nestedTagLevel[tag]++;
+        }else if( s[i] == '<' and s[i+1] == '/' ){
+            // ending tag
+            string tag = consume(s,i+2);
+             // advance pointer by the consumer
+            // character count
+            i+=tag.size()+2;
+            int cnt = charCount.back();
+            nestedTagLevel[tag]--;
+
+
+            // increment count only if it has no parent
+            // tag of same type
+            if( nestedTagLevel[tag] == 0 ){
+                totalCharCount[tags.back()] += cnt;
+            }
+            charCount.pop_back();
+            tags.pop_back();
+            // propagate the character count to its
+            // parents too
+            charCount.back()+=cnt;
+
+
+        }else{
+            if(s[i] != ' ') charCount.back()++;
+        }
+    }
+
+
+    for(auto [tag,cnt]:totalCharCount){
+        if(cnt) {
+            cout<<tag<<": "<<cnt<<endl;
+        }
+    }
+}
+
+
+You are given a string S of length N and an integer K. Your task is to find the total number of subsequences in S that match the pattern P = "orbitaxian", where the difference in position between every consecutive character in the subsequence is no more than K.
+More formally, let the subsequence of P be represented by an array pos, where (1 ≤ pos[i] ≤ N) and S[pos[i]] = P[i]. Then for each i > 1, the condition pos[i] − pos[i-1] ≤ K must hold.
+The result should be returned modulo 10^9+
+#define M 1000000007
+map<char,queue<pii> > pos;
+map<char,int> cntStack;
+int k;
+void calc(char prev, char cur,int ind){
+    while(pos[prev].size() and ind-pos[prev].front().first>k) {
+        cntStack[prev]-=pos[prev].front().second;
+        cntStack[prev] %= M;
+        cntStack[prev] += M;
+        cntStack[prev] %= M;
+
+
+        pos[prev].pop();
+    }
+    if( pos[prev].size() ) {
+        pos[cur].push({ind,cntStack[prev]});
+        cntStack[cur]+=cntStack[prev];
+        cntStack[cur] %= M;
+    }
+}
+
+
+void solve() {
+    string orbitax = "orbitaxIAn";
+    pos.clear();
+    cntStack.clear();
+    int n;
+    cin>>n>>k;
+    string s;
+    cin>>s;
+    for(int i=0;i<s.size();i++){
+        char cur = s[i];
+        char prev;
+        if( s[i] == 'o' ){
+            pos[cur].push({i,1});
+            cntStack[cur]++;
+        }else if( s[i] == 'r' ){
+            calc('o','r',i);
+        }else if( s[i] == 'b' ){
+            calc('r','b',i);
+        }else if( s[i] == 'i' ){
+            calc('b','i',i);
+            calc('x','I',i);
+        }else if( s[i] == 't' ){
+            calc('i','t',i);
+        }else if( s[i] == 'a' ){
+            calc('t','a',i);
+            calc('I','A',i);
+        }else if( s[i] == 'x' ){
+            calc('a','x',i);
+        }else if( s[i] == 'n' ){
+            calc('A','n',i);
+        }
+    }
+    cout<<cntStack['n']<<endl;
+}
+
+
+signed main() {
+    FASTIO;
+    int tc=1;
+    cin>>tc;
+    while(tc--) solve();
+}
+
+
+You are given an array of weights of length 200 and 3 buckets. The sum of total weights of the array will not exceed 100. You need to distribute the weights among the buckets such that the maximum value of the difference between the sum of weights in any two bucket is minimum.
+
+
+bool dp[205][505][505];
+// until index i, weights on 1st bucket is j and 2nd bucket is k,
+// and 3rd bucket is cumsum[i]-j-k;
+void solve() {
+    int n;
+    cin>>n;
+    int weights[n+1];
+    int csum = 0;
+    for(int i=1;i<=n;i++)
+        cin>>weights[i];
+
+
+    // we can put 0 weight in 1st,2nd and 3rd bucket with 0 weights
+    dp[0][0][0] = true;
+
+
+    for(int i=1;i<=n;i++){
+        for(int j=0;j<=min(csum,500);j++){
+            for(int k=0;k<=min(csum,500);k++){
+                if( !dp[i-1][j][k] ) continue;
+                // put it in 1st bucket
+                dp[i][j][k] = true;
+                // put it in the second bucket
+                if( j+weights[i]<=500 ) dp[i][j+weights[i]][k] = true;
+                // put it in the third bucket
+                if( k+weights[i]<=500 ) dp[i][j][k+weights[i]] = true;
+            }
+        }
+        csum+=weights[i];
+    }
+    cout<<csum<<endl;
+    int mx = -1;
+    for(int i=0;i<=min(csum,500);i++){
+        for(int j=0;j<=min(csum,500);j++){
+            if( dp[n][i][j] == false ) continue;
+            int k = csum-i-j;
+            cout<<i<<" "<<j<<" "<<k<<endl;
+            int val = max( {abs(i-j),abs(j-k),abs(k-i)} );
+            mx = mx == -1? val: min(mx,val);
+        }
+    }
+    cout<<mx<<endl;
+}
+
+
+
+
+Kite: https://tamimehsan.github.io/interview-questions-bangladesh/companies/kite
+
+
+Coding Round Questions
+Given an array of positive integers and a integer p. Find the length of the minimum subarray upon deleting which the sum of remaining element will be divisible by p;
+Follow up 1: find the number of subarray (need not be minimum) deleting which will result the sum to be divisible by p
+Follow up 2: For each index find the number of times it is included in any subarray upon deleting which the remaining sum will be divisible by p
+You are given an array people and an integer limit, where people[i] is the weight of the ith person, and an infinite number of boats where each boat can carry a maximum weight of limit. Each boat carries at most two people at the same time, provided the sum of the weight of those people is at most limit.
+Return the minimum number of boats to carry every given person.
+Given an array of n colored balls. And some boxes. Each box has some capacity and each box must contain balls of same color. What is the maximum number of balls that the boxes can carry? Constraint: max capacity of box - min capacity of box <= 1
+Given an array of n integers.Find max subarray sum with at most one delete.
+Given an array of n integers. Find the number of subarrays where the maximum element is between x and y
+
+
+Given a string of lowercase characters. Find the count of characters which only occured once in the string.
+int solve(string s) {
+    sort(s.begin(),s.end());
+    int unik = 0;
+    int cnt = 1;
+    for(int i=1;i<s.size();i++){
+        if( s[i] != s[i-1] ){
+            unik += (cnt == 1);
+            cnt = 0;
+        }
+        cnt++;
+    }
+    unik += (cnt == 1);
+    return unik;
+}
+Given n,Find all primes less than equal n.
+
+
+Given coordinates x,y and radius r of two circle. Find the area of intersection between them. Print area in double with 6 digit precision.
+
+
+// src: https://www.geeksforgeeks.org/area-of-intersection-of-two-circles/
+
+
+#include <bits/stdc++.h>
+using namespace std;
+#define ld long double
+// Function to return area of intersection
+long long int
+intersectionArea(long double X1, long double Y1,
+                    long double R1, long double X2,
+                    long double Y2, long double R2){
+	long double Pi = 3.14;
+	long double d, alpha, beta, a1, a2;
+	long long int ans;
+
+
+	// Calculate the euclidean distance
+	// between the two points
+	d = sqrt((X2 - X1) * (X2 - X1) + (Y2 - Y1) * (Y2 - Y1));
+
+
+	if (d > R1 + R2)
+		ans = 0;
+	else if (d <= (R1 - R2) && R1 >= R2)
+		ans = floor(Pi * R2 * R2);
+	else if (d <= (R2 - R1) && R2 >= R1)
+		ans = floor(Pi * R1 * R1);
+	else {
+		alpha = acos((R1 * R1 + d * d - R2 * R2) / (2 * R1 * d))* 2;
+		beta = acos((R2 * R2 + d * d - R1 * R1) / (2 * R2 * d))* 2;
+		a1 = 0.5 * beta * R2 * R2 - 0.5 * R2 * R2 * sin(beta);
+		a2 = 0.5 * alpha * R1 * R1 - 0.5 * R1 * R1 * sin(alpha);
+		ans = floor(a1 + a2);
+	}
+
+
+	return ans;
+}
+
+
+Given a list of ranges. Find the max length covered by at least one of the range.
+input: [[1,3],[2,5],[6,7]]
+output: 5
+explanation: range [1,5],[6,7] are covered by at least one range
+
+
+
+
+int solve(vector<pair<int,int>> ranges) {
+    sort(ranges.begin(),ranges.end());
+    int covered = 0;
+    int st = ranges[0].first;
+    int en = ranges[0].second;
+    for(int i=1;i<ranges.size();i++){
+        if( ranges[i].first > en ) {
+            covered += en - st;
+            st = ranges[i].first;
+            en = ranges[i].second;
+        }
+        en = max(en,ranges[i].second);
+    }
+    covered += en - st;
+    return covered;
+}
+Sort array elements by their frequency and in case of tie, keep the order they arrive in the original array.
+Given the connection between cities, Count the number of disjoint clusters of cities.
+Given the connection between cities, Count the number of disjoint clusters of cities.
+int solve(string s, char c) {
+    int cnt = 0;
+    for(auto cc:s) cnt += (cc==c);
+    return cnt;
+}
+Given a range [l,r]. Find all primes between this range.
+Given two binary string A,B. Find the minimum number of bit flips to change string A to string B.
+
+
+
+
+2 shops sell apples in lots. their price is given. You cannot buy any loose apples. find minimum cost of buying exactly n apples.
+Given an integer array. Sort the array in nondecreasing order using frequency count of elements in the array.
+Given an array of thresholds. For each threshold print the first negative number.
+
+
+Input given is an int array, which may or may not contain positive, negative or zero values. Write a program to find out the two numbers which gives the highest product.
+
+
+Given an array having 0 to n-1 unsorted. Return a new array having their indices
+https://www.geeksforgeeks.org/dsa/return-a-pair-with-maximum-product-in-array-of-integers/
+Given an array of positive integers. We need to make the given array a ‘Palindrome’. The only allowed operation is”merging” (of two adjacent elements). Merging two adjacent elements means replacing them with their sum. The task is to find the array of maximum length with the minimum number of merge operations required to make the given array a ‘Palindrome’.
+
+
+https://www.geeksforgeeks.org/find-minimum-number-of-merge-operations-to-make-an-array-palindrome/
+
+
+
+
+Given a lowercase string s, find the length L of the longest prefix p such that the entire string is exactly p repeated k times for some integer k ≥ 2. If no such prefix exists, return -1.
+For string: "ababab", L = 2; for "aaaaaa", L = 3; for "abcd", L = -1.
+
+
+[Complexity: O(n^2)]
+n = |s|.
+For L from n/2 down to 1:
+    If (n mod L ≠ 0) skip L.
+    Check if s[0..L-1] is repeated n/L times.
+    If yes, return L.
+return -1
+Use KMP algorithm to build the LPS array. Use the last value of the LPS array to find the answer. [Complexity: O(n)]
+int n = s.length();
+computeLsa(s);
+int d = n - lsa[n - 1];
+if (n % d != 0 || d == n) return -1;
+else {
+    int ans = floor(n / (2 * d)) * d;
+    if(n % ans != 0) return -1;
+    else return ans;
+}
+
+
+
+
+
+
+Given multiple test cases, each containing a 3-letter string (uppercase/lowercase letters), you have to check whether the string equals "YES", case-insensitively. Output "YES" if it matches, else "NO".
+Given
+Number of students, games, and connection events
+For each student, the game they like
+A sequence of connections between pairs of students over time
+For each game, determine the earliest time when all students who like that game become connected (either directly or indirectly). Output -1 if they never get connected
+Given:
+Number of questions
+For each question: initial score, per-minute penalty, minimum score
+For each question: submission time and number of submissions (positive if solved, non-positive if unsolved)
+Calculate the total score based on a formula involving penalties and number of attempts. If a question is unsolved, its score is 0.
+Given a list of unique 9-digit phone numbers. For each phone number, find the shortest digit substring that uniquely identifies it (i.e., no other number contains it as a substring).
+Given:
+Number of dishes, adults, and kids
+For each dish: happiness value if eaten by an adult or by a kid
+Assign one dish to each person (adult or kid) to maximize the total happiness. An adult eats the entire dish; a kid partially eats it.
+Given:
+A list of item costs
+A limit on the total increase Sabbir can apply to the item costs
+Sabbir increases item costs (total increment ≤ limit) to minimize the final score difference in a turn-based game where players pick items alternately and optimally.
+Given:
+A circular string of length N×K representing N fragments of length K
+A list of G candidate fragments (all distinct)
+Determine if the circular string can be split into a sequence of N valid fragments (from the candidate list) in some rotation. If possible, output any such valid sequence.
+Given multiple test cases, each with two numbers: total artifacts n and a position k. Artifacts are arranged in a special sequence: first all odd-numbered ones, then multiples of odd numbers (2×odd, 3×odd, etc.) in order, skipping duplicates. Find which artifact appears at position k.
+
+
+Given grid dimensions n × m. Determine if it is possible to assign pigment values to rows and columns such that every cell in the grid (combining row and column pigment modulo nm) has a unique value. If possible, output the row and column pigments.
+
+
+Given a sequence of integers, convert each number to binary using parity (even → 1, odd → 0), concatenate to form a binary string, and print it with leading zeros removed.
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+void solve() {
+    int n; cin >> n;    // size of the array
+
+
+    // read input array
+    vector<int> arr(n);
+    for (auto &x : arr) cin >> x;
+
+
+    // convert even -> 1, odd -> 0
+    for (int i = 0; i < n; i++) {
+        arr[i] = (arr[i] % 2 == 0) ? 1 : 0;
+    }
+
+
+    // find position of the last leading zero (if any)
+    int initial_zero = -1;
+    for (int i = 0; i < n; i++) {
+        if (arr[i] == 0) {
+            initial_zero = i;
+        } else {
+            break;
+        }
+    }
+
+
+    // Build answer string from remaining elements
+    string ans;
+    for (int i = initial_zero + 1; i < n; i++) {
+        ans += char(arr[i] + '0');
+    }
+
+
+    cout << ans << "\n";
+}
+
+
+int32_t main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+
+    int t; 
+    cin >> t;  // number of test cases
+
+
+    for (int i = 1; i <= t; i++) {
+        cout << "Case " << i << ": ";
+        solve();
+    }
+
+
+    return 0;
+}
+
+
+Given dimensions of two rectangles, one inside another, where the outer rectangle is (A×B) and inner rectangle is (C×D), with C ≤ A and D ≤ B.
+Compute the area between the two rectangles modulo 1,000,000,007.
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+
+const int mod = 1e9 + 7;
+
+
+long long multiplication(long long a, long long b,long long m){
+    a %= m;
+	b %= m;
+	return (a * b) % m;
+}
+
+
+
+
+void solve(){
+    long long a, b, c, d; cin >> a >> b >> c >> d;
+
+
+    long long x = multiplication(a, b, mod);
+    long long y = multiplication(c, d, mod);
+
+
+    long long result = (x - y + mod) % mod;
+    cout << result << "\n";
+}
+ 
+int32_t main(){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    int t = 1;
+    cin >> t;
+    for(int i = 1; i <= t; i++){
+        solve();
+    }
+    
+    return 0;
+}
+Given N baskets arranged in a circle with given apples in each and a number K indicating how many apples one will eat.
+Simulate the person moving right and eating apples if present, and output the number of apples left in each basket after exactly K apples are eaten.
+Given a string s of length n. Pick an integer k (1 ≤ k ≤ n) and perform a transformation: reverse each substring of length k sliding through the string, and find the lexicographically smallest resulting string. Output that string and the smallest such k.
+https://codeforces.com/problemset/problem/1316/B
+Given a simple directed graph with N vertices and M edges. Count how many vertices can be starting points for infinite walks (i.e., they lie on or can reach a cycle).
+https://atcoder.jp/contests/abc245/tasks/abc245_f
+Given a book with N pages (numbered 1 to N) and a secret digit (0–9), and you randomly pick a page. Compute the probability that the page number you picked contains the secret digit, expressed as an irreducible fraction P/Q.
+https://www.codechef.com/problems/ANUBGC
+Given Grid size n×m and manhattan distances from a hidden cell (a, b) to (1, 1) and (1, m). Find the coordinates (a, b) of the hidden cell using the given distances
+https://codeforces.com/problemset/problem/1934/C
+
+
+Given a array of numbers. You have to perform a number of queries. Each queries ask for the average of numbers from a range.
+A dynamic programming problem.(Similar to 0/1 knapsack)
+Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+
+Given an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target.
+(two sum)
+You have been provided a spiral matrix of size NXN along with a coordinate (x, y) as follows. Find the element at the position (x, y) of the matrix. N = 4, x = 2, y =1
+1
+2
+3
+4
+12
+13
+14
+5
+11
+16
+15
+6
+10
+9
+8
+7
+
+The element at position (2, 1) is 12 [indexed at (1, 0)]
+
+
+
+
+Given a number in roman format. Convert it to arabic numeral.
+
+
+
+
+map<char,int>RtoA;
+void preprocess(){
+    // Map of romans to Arabic
+    RtoA['I'] = 1;      RtoA['V'] = 5;
+    RtoA['X'] = 10;     RtoA['L'] = 50;
+    RtoA['C'] = 100;    RtoA['D'] = 500;
+    RtoA['M'] = 1000;
+}
+
+
+// Roman numerals to Arabic
+int RomanToArabic(string R){
+    int value = 0;
+    int n = R.size();
+    for(int i=0;i<n;i++){
+        if( R[i+1] && RtoA[ R[i] ] < RtoA[ R[i+1] ] ){
+            value+= RtoA[ R[i+1] ] - RtoA[ R[i] ];
+            i++;
+        } else{
+            value+=RtoA[ R[i] ];
+        }
+    }
+    return value;
+}
+
+
+Given a string of characters. Reverse the string without using any library function.
+
+
+
+
+
+
+void solve(string &s){
+
+
+    int n = s.size();
+
+
+    for(int i=0;i<n/2;i++){
+
+
+        char temp = s[i];
+        s[i] = s[n-i-1];
+        s[n-i-1] = temp;
+    }
+}
+
+
+Given a string of characters. Check if the given string is a palindrome.
+
+
+
+
+bool solve(string s){
+    int n = s.size();
+    for(int i=0;i<n/2;i++){
+        if(s[i] != s[n-i-1]) return false;
+    }
+    return true;
+}
+
+
+Given an positive integer n. Find the sum of even fibonacchi number upto nth term.
+
+
+long long solve(int n){
+    if(n == 1 or n == 2) return 0;
+    long long sum = 0, first = 1, second = 1;
+    for(int fib=2;fib<n;fib++){
+        long long temp = first;
+        first = second;
+        second = temp + second;
+        if(second % 2 == 0) sum += second;
+    }
+    return sum;
+}
+Given a string of characters [0-9]. Convert it to integer.
+
+
+long long stringToInteger(string &s) {
+    int n = s.size();
+    long long res = 0;
+    for(int i=0;i<n;i++){
+        res = (res*10) + (s[i] - '0');
+    }
+    return res;
+}
+
+
+Given an array of integers. Generate all possible permutation of the given array.
+
+
+class Solution {
+public:
+    vector<vector<int>> perms;
+    
+    void backtrack(vector<int>& nums, vector<int> &perm, int rem){
+        if( rem == 0 ){
+            perms.push_back(perm);
+            return;
+        }
+        for(int i=0;i<nums.size();i++){
+            if( nums[i] == 69 ) continue;
+            perm.push_back(nums[i]);
+            nums[i] = 69;
+            backtrack(nums,perm,rem-1);
+            nums[i] = perm.back();
+            perm.pop_back();
+        }
+    }
+
+
+    vector<vector<int>> permute(vector<int>& nums){
+        vector<int> perm;
+        backtrack(nums,perm,nums.size());
+        return perms;
+    }
+};
+Given an array of integers. Generate all possible subset of the given array.
+class Solution {
+public:
+    vector<vector<int>> subs;
+    vector<int> sub;
+
+
+    void backtrack(vector<int>& nums, int index){
+        if( index == nums.size() ){
+            subs.push_back(sub);
+            return;
+        }
+        // take the current value
+        sub.push_back(nums[index]);
+        backtrack(nums,index+1);
+        sub.pop_back();
+        // don't take the current value
+        backtrack(nums,index+1);
+    }
+
+
+    vector<vector<int>> subsets(vector<int>& nums){
+        backtrack(nums,0);
+        return subs;
+    }
+};
+Given a regex expression and a string. Check if the regex expression matches with the string.
+
+
+Each student is assigned to an assignment at a particular location at a specific time. Are there any inconsistencies in the assignments ? Find at least one of them by looking into the input. Then write a code to print all inconsistencies in the assignments.
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+struct Assignment {
+    string Area, Time;
+    vector<int> StudentIds;
+};
+
+
+vector<Assignment> getInput() {
+    vector<Assignment> res = {
+        {"Garden", "A", {2, 9, 1}},
+        {"Pond", "M", {2, 8, 5}},
+        {"FoodCourt", "A", {4, 8, 7}},
+        {"Playground", "M", {1, 7, 2}},
+        {"PicnicArea", "M", {7, 3, 9}},
+        {"Zoo", "A", {6, 3, 2}},
+    };
+    return res;
+}
+
+
+int main() {
+    vector<Assignment> inputs = getInput();
+
+
+    map< pair<int, string>, vector<string> > mapping;
+    for (Assignment a : inputs) {
+        for (auto studentId : a.StudentIds)
+            mapping[{studentId, a.Time}].push_back(a.Area);
+    }
+
+
+    for (auto k: mapping) {
+        if (k.second.size() > 1) {
+            cout << "Student " << k.first.first << " has conflicts at time " << k.first.second << " at : " << endl;
+
+
+            for (string area : k.second) {
+                cout << area << " ";
+            }
+            cout << endl;
+        }
+    }
+}
+
+
+Implement Game of Life
+
+
+__________________
+
+
+|██ 
+|  ██ ██
+|██ ██ 
+|
+|
+|
+|
+|
+In the game of life, you have a 2D matrix of small squares that can be either alive or dead. The matrix goes through iterations, and on every iteration the squares can die or be revived. This is based on the previous iteration and the below rules
+A living square with 1 or less neighbors in the previous iteration will die, as if from loneliness
+A living square with 2 or 3 neighbors in the previous iteration will survive, as if from contentment
+A living square with 4 or more neighbors in the previous iteration will die, as if from overpopulation
+A dead square with exactly 3 neighbors in the previous iteration will be revived, as if by unfulfilled desires
+Implement a square matrix of size 20 and set up the initial five (given) living squares. Then run 10 iterations on it, then print the final matrix. 0,0 should be the top left of the matrix, where the first is the row and the second is the column.
+matrix size = 20
+iterations = 10
+initial squares =
+[0][0]
+[1][1]
+
+
+#include <bits/stdc++.h>
+
+
+using namespace std;
+
+
+vector<vector<bool>> matrix(msz, vector<bool>(msz, false));
+
+
+vector<int> dx = {-1, -1, -1, 0, 0, 1, 1, 1};
+vector<int> dy = {-1, 0, 1, -1, 1, -1, 0, 1};
+
+
+signed main() {
+    matrix[0][0] = true;
+    matrix[1][1] = true;
+    matrix[1][2] = true;
+    matrix[2][0] = true;
+    matrix[2][1] = true;
+
+
+    for (int gen = 1; gen <= max_iters; gen++) {
+        vector<vector<bool>> next_gen_mat(msz, vector<bool>(msz, false));
+
+
+        for (int i=0; i<msz; i++) {
+            for (int j=0; j<msz; j++) {
+                int alive_neighbors = 0;
+
+
+                for (int k=0; k<8; k++)  {
+                    int ni = i + dx[k], nj = j + dy[k];
+                    if (ni >= 0 and ni < msz and nj >=0 and nj < msz) {
+                        if (matrix[ni][nj]) alive_neighbors++;
+                    }
+                }
+
+
+                if (matrix[i][j]) {
+                    if (alive_neighbors <= 1) next_gen_mat[i][j] = false;
+                    else if (alive_neighbors <= 3) next_gen_mat[i][j] = true;
+                    else next_gen_mat[i][j] = false;
+                } else {
+                    if (alive_neighbors == 3) next_gen_mat[i][j] = true;
+                }
+
+
+            }
+        }
+
+
+        matrix = next_gen_mat;
+
+
+        cout << "Gen : " << gen << endl;
+        for (int i=0; i<msz; i++) {
+            for (int j=0; j<msz; j++) {
+                if (matrix[i][j]) cout << "██";
+                else cout << "  ";
+            }
+            cout << endl;
+        }
+        cout << endl;
+
+
+    }
+}
+
+
+Find digits from a string( Leading zeroes doesn't get counted)
+
+
+Given a string s containing lowercase lattin letters and another string p containing lowercase lattin letters and * and ?. * means any substring possibly empty. ? means any character but single.
+Print yes or no if both strings matches. [RegEx Matching]
+
+
+int dp[25][25];
+    bool Down(string &p,string &s, int i,int j){
+    if( p[j] == '*' and p[j-1] == s[i] and dp[i-1][j] == 1 ) return true;
+    if( p[j] == '*' and p[j-1] == '.' and dp[i-1][j] == 1 ) return true;
+    return false;
+}
+bool Corner(string &p,string &s, int i,int j){
+    if( p[j] == '.' and dp[i-1][j-1] == 1 ) return true;
+    if( p[j] == s[i] and dp[i-1][j-1] == 1 ) return true;
+    return false;
+}
+bool Right(string &p,string &s, int i,int j){
+    if( p[j] == '*' and dp[i-1][j-2] == 1 ) {
+        dp[i-1][j] = 1;
+    }
+    if( p[j] == '*' and dp[i][j-2] == 1 ) {
+        return true;
+    }
+    return false;
+}
+bool isMatch(string s, string p) {
+    for(int i=0;i<25;i++) for(int j=0;j<25;j++) dp[i][j] = 0;
+    dp[0][0] = 1;
+    s = "#"+s;
+    p = "#"+p;
+    int n = s.size(); int m = p.size();
+
+
+    dp[0][0] = 1;
+    for(int i=1;i<n;i++){
+        for(int j=1;j<m;j++){
+            Right(p,s,i,j);
+            if( Down(p,s,i,j) or Corner(p,s,i,j) or Right(p,s,i,j)  ) dp[i][j] = 1;
+        }
+    }
+   
+    return dp[n-1][m-1];
+}
+
+
+
+
+Write a function which converts decimal number to hexadecimal
+string decimalToHexa(int decimal){
+    string hexa = "";
+    while(decimal > 0){
+        int remainder = decimal % 16;
+        if(remainder < 10){
+            hexa = to_string(remainder) + hexa;
+        }else{
+            hexa = char(remainder + 55) + hexa;
+        }
+        decimal /= 16;
+    }
+    return hexa;
+}
+
+
+Write a function which finds all the subset of a given set.
+
+
+
+
+vector<vector<int>> ans;
+void allsubset(vector<int>&nums,int i,vector<int>&subset){
+    if(i>=nums.size()){
+        ans.push_back(subset);
+        return;
+    }
+    subset.push_back(nums[i]);
+    allsubset(nums,i+1,subset);
+    subset.pop_back();
+    allsubset(nums,i+1,subset);
+}
+vector<vector<int>> subsets(vector<int>& nums) {
+    vector<int>subset;
+    allsubset(nums,0,subset);
+    return ans;
+}
+Given a set of orderings of letters, determine their topological sorting order. The orderings are provided as strings. For example, given the input ["A>B", "B>C", "C>D"], the expected output is "ABCD".
+Given two numbers represented as arrays of characters in decimal format, add them and return the result in the same format. For example, Input: ['1', '2', '3'] and ['4', '5', '6'] Output: Output: ['5', '7', '9']
+vector<char> sum(vector<char> &A, vector<char> &B){
+    reverse(A.begin(),A.end());
+    reverse(B.begin(),B.end());
+    vector<char> sum;
+    int c = 0;
+    int i=0,j=0;
+    while(true){
+        int a=0,b=0;
+        if( i<A.size() ) a = A[i++]-'0';
+        if( j<B.size() ) b = B[j++]-'0';
+
+
+        int s = (a+b+c)%10;
+        c = (a+b+c)/10;
+        sum.push_back(s+'0');
+        if( i>=A.size() and j>=B.size() and c == 0 ) break;
+    }
+    reverse(sum.begin(),sum.end());
+    return sum;
+}
+
+
+Given an integer num, repeatedly add all its digits until the result has only one digit, and return it. (It is called the digital root of the number)
+class Solution {
+public:
+    int addDigits(int num) {
+        if( num < 10 ) return num;
+        int root = 0;
+        while(num){
+            root += num%10;
+            num /= 10;
+        }
+        return addDigits(root);
+    }
+};
+
+
+Given an encoded string, return its decoded string.
+The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times.
+https://leetcode.com/problems/decode-string/description/
+
+
+ou are given row x col grid representing a map where grid[i][j] = 1 represents land and grid[i][j] = 0 represents water.
+Grid cells are connected horizontally/vertically (not diagonally). The grid is completely surrounded by water, and there is exactly one island (i.e., one or more connected land cells).
+The island doesn't have "lakes", meaning the water inside isn't connected to the water around the island. One cell is a square with side length 1. The grid is rectangular, width and height don't exceed 100. Determine the perimeter of the island.
+https://leetcode.com/problems/island-perimeter/description/
+
+
+Write a function that takes an array and a number as an argument. if the number is greater than 0, you must pop the number of elements from the array. if the number is not provided then pop once.
+Given an array of integers, find the second max of the array
+Given an array of integers and a sorting criteria[asc/desc], sort the array based on the sorting criteria in either ascending or descending order
+Given an array of strings `words` and a width `maxWidth`, format the text such that each line has exactly `maxWidth` characters and is fully (left and right) justified
+https://leetcode.com/problems/text-justification/description/
+You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).
+void rotate(vector<vector<int>> &matrix)
+    {
+        reverse(matrix.begin(), matrix.end());
+        for (int i = 0; i < matrix.size(); i++)
+        {
+            for (int j = i + 1; j < matrix.size(); j++)
+            {
+                swap(matrix[i][j], matrix[j][i]);
+            }
+        }
+    }
+Given an array nums. Find the average of the array excluding the maximum and minimum values.
+Given n cars in a row with their speeds and a specific position, calculate the total number of collisions that occur.
+Given an array of integers nums and queries in the form l, r. For each query, count the number of elements which are in range [l,r] in the array.
+Given an array of integers nums. Find the second maximum element in an array using only one loop.
+How do you center-align a right-angled triangle of numbers up to a given base limit?
+Convert a given string into a palindrome with the least number of changes.
+You are given two integer arrays nums1 and nums2, sorted in non-decreasing order. Merge nums1 and nums2 into a single array sorted in non-decreasing order.
+https://leetcode.com/problems/merge-sorted-array/description/
+Given an array of integers, calculate the absolute difference between the sum of odd-indexed and even-indexed elements.
+Given an array of integers nums. In each move pick two numbers from start and end of the array, store the smaller in output, then remove it. Repeat until empty. What will be the output array?
+
+
+Given an integer x, return true if x is a palindrome, and false otherwise.
+https://leetcode.com/problems/palindrome-number/description/
+Given an integer array nums, rotate the array to the right by k steps, where k is non-negative.
+https://leetcode.com/problems/rotate-array/description/
+Given an array and a number, construct a number from the array digits, subtract the given number, and return the result.
+Given n, calculate the nth Fibonacci number F(n).
+https://leetcode.com/problems/fibonacci-number/description/
+Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+https://leetcode.com/problems/valid-anagram/description/
+Print all repeating elements in an array.
+Given a string queryIP, return "IPv4" if IP is a valid IPv4 address, "IPv6" if IP is a valid IPv6 address or "Neither" if IP is not a correct IP of any type.
+https://leetcode.com/problems/validate-ip-address/description/
+You are given a string, message, and a positive integer, limit. Split the string into lines such that each line has a maximum of limit characters. 💻 Submit Code
+Problem Statement: You'll be given two strings A and B, with lengths 1 <= length <= 10^6. The strings will contain only 1's and 0's. To make A a good string, you can insert B into A at any place, as many times as you want (or don't insert if you don't want). You have to print YES or NO depending on whether making A as a good string is possible.
+
+
+The Definition of GOOD: A good string will never consecutively have two 1's or two 0's.
+Input/Output: The input will consist of two strings in two lines, strings A and B.
+The output must be only one word, "YES" or "NO".
+Sample Input/Output:
+Input
+Output
+101
+010
+YES
+111
+010
+YES
+1110011
+01010
+NO
+1001001000
+10
+NO
+
+
+
+Convert a decimal number to binary and show the output in string.
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+string decimalToBinary(int n) {
+    string binary = "";
+    while (n > 0) {
+        binary += to_string(n % 2);
+        n /= 2;
+    }
+    reverse(binary.begin(), binary.end());
+    return binary;
+}
+
+
+
+
+https://tamimehsan.github.io/interview-questions-bangladesh/companies/fringecore
+
+
+
+
+You are given a positive integer N. Find the number of triples (X,Y,Z) such that:
+0 < X,Y,Z < N,
+X + Y + Z = N,
+X ∣∣ Y ∣∣ Z = N, where ∣∣ represents the bitwise OR operation.
+Since the number of triples can be huge, print them modulo 10^9+7.
+https://www.codechef.com/problems/AWESUM_OR
+You are given an integer n. A game is played on a square field consisting of n × n cells. Initially all cells are empty. On each turn a player chooses and paint an empty cell that has no common sides with previously painted cells. Adjacent corner of painted cells is allowed. On the next turn another player does the same, then the first one and so on. The player with no cells to paint on his turn loses. Output the player who wins
+https://codeforces.com/problemset/problem/630/R
+You are given a chess board of size (2n)(2n), some of the color of the board is flipped and the board is broken down in 4 square piece each with size nn. You can join the 4 pieces in any order without rotating or flipping. As the some of the colors were flipped, so to get a valid chessboard there must need to be some recoloring. Output the minimum number of recoloring such that the 4 pieces can be joined to get a valid chessboard.
+https://codeforces.com/problemset/problem/961/C
+You have a string of N decimal digits.
+Now you are given M queries, each of whom is of following two types.
+- Type 1: 1 X Y: Replace A[X] by Y.
+- Type 2: 2 C D: Print the number of sub-strings divisible by 3 of the string denoted by A[C],A[C+1] ... A[D].
+Formally, you have to print the number of pairs (i,j) such that the string A[i],A[i+1]...A[j], (C ≤ i ≤ j ≤ D), when considered as a decimal number, is divisible by 3
+https://www.codechef.com/problems/QSET
+
+
+
+
+There is a robot in a 4*4 matrix. The robot is initilly in cell (a,b) and wants to go to another cell (c,d). However, the robot doesn't know the exact route and will move to any of its adjacent cell at equal probability. What is the probability that the robot will go from initial cell (a,b) to final cell (c,d) in exactly 4 moves.
+There is a robot in a undirected tree. The robot will move from a node to any of its adjacent node with equal probability. What is the expected number of moves required for the robot to go from node a to node b.
+You are given an array of integers. You want to make the array non increasing. To do that you can cut out a subsegment of the array to discard and concat the remaining segment(s). What is the minimum length of the cut segment to make the remaining parts nondecreasing.
+Example: [9,7,4,3,6,6,2] : we can remove the subsegment containing [4,3] to make the array [9,7,6,6,2] or remove the segment [6,6] to make the array [9,7,4,3,2]. Both of them are non increasing.
+
+
