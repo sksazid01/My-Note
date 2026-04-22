@@ -99,4 +99,51 @@ then git will automatically provide a commit message.
 > move branch without committing changes
 
 
+## Fresh setup in terminal (after cleaning old Git info)
+
+Use these commands when you want to remove previous Git user/credential setup and configure from scratch.
+
+### 1) Check what is currently configured
+```bash
+git config --global --list
+git config --local --list
+```
+
+### 2) Remove old global identity and helper
+```bash
+git config --global --unset user.name
+git config --global --unset user.email
+git config --global --unset credential.helper
+```
+
+If any key is missing, Git may show an error. That is okay.
+
+### 3) Clean stored credentials
+```bash
+rm -f ~/.git-credentials
+```
+
+Optional (if you used local repo-specific values):
+```bash
+git config --local --unset user.name
+git config --local --unset user.email
+git config --local --unset credential.helper
+```
+
+### 4) Set new global Git identity + credential helper
+```bash
+git config --global user.name "YOUR_NAME"
+git config --global user.email "YOUR_EMAIL@example.com"
+git config --global credential.helper store
+```
+
+### 5) Verify final setup
+```bash
+git config --global --list
+```
+
+### 6) Test with one push
+On first push, Git will ask for username and token. With `credential.helper store`, it saves them in `~/.git-credentials`.
+
+
 
