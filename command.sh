@@ -40,12 +40,24 @@ find .   \( -type d -o -type f \)   ! -path "*/.*"   ! -path "*/target/*"   ! -p
 For Zip:
 zip -r Pre_Defense.zip Template
 
+Stop process of a port:
+fuser -k 4200/tcp
+Explanation:
+Part	Meaning
+fuser	File User — finds processes using a file/socket
+-k	Kill — sends kill signal to found process
+4200	Port number to target
+/tcp	Protocol — TCP type connection
 
+Another:
+sudo kill -9 $(sudo lsof -t -i :4200)
 
-
-
-
-
+Explanation:
+lsof	List Open Files — lists all open files/sockets
+-t	Terse mode — output only the PID (no extra info)
+-i	Look for internet/network connections
+-15     SIGTERM		Graceful shutdown
+-9	SIGKILL		Force kill
 
 
 
