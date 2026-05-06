@@ -62,8 +62,20 @@ lsof	List Open Files — lists all open files/sockets
 Install VS code Insiders:
 sudo snap install code-insiders --classic
 
-
-
+Always vs-code run 'nvm use 10.24.1' command for every new terminal startup:
+1. Ctrl + Shift + P
+2 Preferences: Open User Settings JSON
+3 add those json inside the {} and save:
+"terminal.integrated.profiles.linux": {
+    "Angular 6 Node 10": {
+      "path": "bash",
+      "args": [
+        "-c",
+        "source ~/.nvm/nvm.sh && nvm use 10.24.1 && exec bash"
+      ]
+    }
+  },
+  "terminal.integrated.defaultProfile.linux": "Angular 6 Node 10"
 
 
 
