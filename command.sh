@@ -59,7 +59,8 @@ lsof	List Open Files — lists all open files/sockets
 -15     SIGTERM		Graceful shutdown
 -9	SIGKILL		Force kill
 
-
+Install VS code Insiders:
+sudo snap install code-insiders --classic
 
 
 
