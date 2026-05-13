@@ -158,3 +158,17 @@ nvm use 10.24.1
 },
 "terminal.integrated.defaultProfile.linux": "Angular 6 Node 10"
 ```
+
+## To prevent VS Code from auto updating using (sudo apt update && sudo apt upgrade):
+* I can hold the code package using below command
+```
+sudo apt-mark hold code
+```
+* To verify:
+  ```
+  apt-mark showhold
+  ```
+* You should see:
+```
+code
+```
