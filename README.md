@@ -172,3 +172,39 @@ sudo apt-mark hold code
 ```
 code
 ```
+
+## Mouse wheel “jumping/blinking,” and AirPods audio glitches are common symptoms
+* This is usually caused by Bluetooth interference, power-saving issues, or a buggy Bluetooth stack in Ubuntu.
+
+Disable Bluetooth power saving (VERY common fix)
+
+Open terminal:
+
+```bash
+sudo nano /etc/bluetooth/main.conf
+```
+
+Find this line:
+
+```ini
+#ControllerMode = dual
+```
+
+Add below it:
+
+```ini
+FastConnectable = true
+```
+
+Then save:
+
+* `Ctrl + O`
+* Enter
+* `Ctrl + X`
+
+Restart Bluetooth:
+
+```bash
+sudo systemctl restart bluetooth
+```
+
