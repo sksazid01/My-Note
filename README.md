@@ -195,6 +195,13 @@ Add below it:
 ```ini
 FastConnectable = true
 ```
+```bash
+sudo nano /etc/modprobe.d/disable-btusb-autosuspend.conf
+```
+Add:
+```ini
+options btusb enable_autosuspend=0
+```
 
 Then save:
 
@@ -206,5 +213,14 @@ Restart Bluetooth:
 
 ```bash
 sudo systemctl restart bluetooth
+```
+## Disable Wi-Fi power saving
+```bash
+sudo nano /etc/NetworkManager/conf.d/wifi-powersave.conf
+```
+Paste:
+```ini
+[connection]
+wifi.powersave = 2
 ```
 
