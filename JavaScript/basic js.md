@@ -252,5 +252,71 @@ const add = (a, b) => a + b;
 console.log(add(3, 4));
 // Output: 7
 ```
+### `:number` (lowercase) — TypeScript Primitive
 
+```typescript
+
+// primitive type — use this 99% of the time
+
+age: number = 25;
+
+price: number = 99.99;
+
+id: number = 1;
+
+```
+
+### `:Number` (uppercase) — JavaScript Object Wrapper
+
+```typescript
+
+// object wrapper — avoid this
+
+age: Number = 25;
+
+```
+
+---
+
+### Key Differences
+
+| | `number` | `Number` |
+
+|---|---|---|
+
+| Type | Primitive | Object |
+
+| Memory | Lightweight | Heavier (object) |
+
+| Comparison `==` | ✅ Works normally | ⚠️ Can behave unexpectedly |
+
+| Recommended | ✅ Yes | ❌ No |
+
+| Usage | Variables, params, return types | Almost never |
+
+---
+
+### Why `Number` (uppercase) Causes Problems
+
+```typescript
+
+// ❌ unexpected behavior with Number object
+
+const a: Number = 5;
+
+const b: Number = 5;
+
+console.log(a === b);   // false ← compares object references!
+
+console.log(a == b);    // true
+
+// ✅ primitive works as expected
+
+const x: number = 5;
+
+const y: number = 5;
+
+console.log(x === y);   // true ✅
+
+```
 ---
