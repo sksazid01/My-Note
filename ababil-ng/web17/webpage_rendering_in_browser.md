@@ -334,66 +334,6 @@ fetchDivisions() {
 }
 ```
 
----
-
-## When It Does NOT Fire Automatically
-
-Some cases Zone.js **cannot** detect:
-
-```typescript
-// ❌ Change outside Angular zone
-this.divisions = [];   // inside setTimeout from 3rd party lib
-
-// ❌ Manual object mutation (same reference)
-this.divisions.push(newItem);  // sometimes not detected
-// ✅ fix: reassign reference
-this.divisions = [...this.divisions, newItem];
-```
-
----
-
-## Manually Triggering Change Detection
-
-For those edge cases, Angular provides manual options:
-
-```typescript
-import { ChangeDetectorRef } from '@angular/core';
-
-constructor(private cdr: ChangeDetectorRef) {}
-
-// Option 1 — check and update this component
-this.cdr.detectChanges();
-
-// Option 2 — mark as dirty, update on next cycle
-this.cdr.markForCheck();
-```
-
----
-
-## Running Outside Zone (Performance)
-
-Sometimes you want to **skip** Change Detection for heavy tasks:
-
-```typescript
-import { NgZone } from '@angular/core';
-
-constructor(private ngZone: NgZone) {}
-
-// run outside zone = no Change Detection triggered
-this.ngZone.runOutsideAngular(() => {
-  setInterval(() => {
-    // heavy calculation — won't trigger Change Detection
-  }, 100);
-});
-
-// bring back inside zone when you need UI update
-this.ngZone.run(() => {
-  this.result = finalValue;  // now Change Detection fires ✅
-});
-```
-
----
-
 ## Summary
 
 | Trigger | Auto? | Why |
