@@ -321,3 +321,144 @@ this.addressForm.get('divisionId').reset();
 this.addressForm.get('cityId').reset();
 this.addressForm.get('streetId').reset();
 ```
+
+
+## Does Change Detection Fire Automatically?
+
+**Yes** — automatically, thanks to **Zone.js**
+
+---
+
+## What is Zone.js?
+
+Angular ships with a library called **Zone.js** that **monkey-patches** (wraps) all async browser APIs and intercepts them.
+
+```
+Zone.js wraps:
+├── setTimeout / setInterval
+├── HTTP requests (fetch, XMLHttpRequest)
+├── DOM events (click, input, change)
+├── Promises
+└── Observable subscriptions
+```
+
+So whenever any of these happen, Zone.js **notifies Angular** → Angular runs Change Detection.
+
+---
+
+## The Automatic Flow
+
+```
+Any of these happen:
+├── User clicks a button
+├── User types in input
+├── HTTP response arrives
+├── setTimeout fires
+└── Promise resolves
+        │
+        ▼
+Zone.js intercepts it
+        │
+        ▼
+Notifies Angular: "something happened!"
+        │
+        ▼
+Angular runs Change Detection automatically
+        │
+        ▼
+DOM updates ✅
+```
+
+---
+
+## Real Example
+
+```typescript
+// .ts file
+divisions: any[] = [];
+
+fetchDivisions() {
+  this.http.get('/api/divisions')
+    .subscribe(data => {
+      this.divisions = data;   // ← you just assign the value
+      // NO need to manually trigger anything
+      // Zone.js sees the HTTP response arrived
+      // Angular automatically runs Change Detection
+      // *ngFor in HTML re-renders automatically ✅
+    });
+}
+```
+
+---
+
+## When It Does NOT Fire Automatically
+
+Some cases Zone.js **cannot** detect:
+
+```typescript
+// ❌ Change outside Angular zone
+this.divisions = [];   // inside setTimeout from 3rd party lib
+
+// ❌ Manual object mutation (same reference)
+this.divisions.push(newItem);  // sometimes not detected
+// ✅ fix: reassign reference
+this.divisions = [...this.divisions, newItem];
+```
+
+---
+
+## Manually Triggering Change Detection
+
+For those edge cases, Angular provides manual options:
+
+```typescript
+import { ChangeDetectorRef } from '@angular/core';
+
+constructor(private cdr: ChangeDetectorRef) {}
+
+// Option 1 — check and update this component
+this.cdr.detectChanges();
+
+// Option 2 — mark as dirty, update on next cycle
+this.cdr.markForCheck();
+```
+
+---
+
+## Running Outside Zone (Performance)
+
+Sometimes you want to **skip** Change Detection for heavy tasks:
+
+```typescript
+import { NgZone } from '@angular/core';
+
+constructor(private ngZone: NgZone) {}
+
+// run outside zone = no Change Detection triggered
+this.ngZone.runOutsideAngular(() => {
+  setInterval(() => {
+    // heavy calculation — won't trigger Change Detection
+  }, 100);
+});
+
+// bring back inside zone when you need UI update
+this.ngZone.run(() => {
+  this.result = finalValue;  // now Change Detection fires ✅
+});
+```
+
+---
+
+## Summary
+
+| Trigger | Auto? | Why |
+|---|---|---|
+| User clicks/types | ✅ Yes | Zone.js wraps DOM events |
+| HTTP response | ✅ Yes | Zone.js wraps fetch/XHR |
+| setTimeout fires | ✅ Yes | Zone.js wraps timers |
+| Promise resolves | ✅ Yes | Zone.js wraps Promises |
+| 3rd party lib changes | ❌ No | Outside Angular's zone |
+| Same object reference mutation | ❌ No | Zone.js can't detect it |
+| `runOutsideAngular()` | ❌ No | Intentionally skipped |
+
+> **Zone.js is the magic** that makes Angular "just work" without you manually telling it to update the UI every time.
